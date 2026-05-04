@@ -35,7 +35,7 @@ jobs:
         run: conan install . --build=missing --output-folder build
       
       - name: Configure CMake
-        run: cmake -B build -S .
+        run: cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE="build/conan_toolchain.cmake"
 
       - name: Build (Windows)
         run: cmake --build build
