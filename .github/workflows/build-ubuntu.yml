@@ -1,4 +1,4 @@
-name: Build BirchEngine
+name: Build NeoBirch (Ubuntu)
 
 on:
   pull_request:
