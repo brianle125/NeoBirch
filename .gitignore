@@ -1,0 +1,34 @@
+.vscode/
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+.vs/
+
+# Build artifacts
+build/
+*.o
+*.obj
+*.a
+*.lib
+*.dll
+*.so
+*.exe
+*.ilk
+*.pdb
+*.elf
+
+# CMake artifacts
+CMakeUserPresets.json
+compile_commands.json
+
+# IDE artifacts
+.idea/
+*.swp
+*.swo
+*~
+
+# OS artifacts
+Thumbs.db
+.DS_Store
+
+venv/
