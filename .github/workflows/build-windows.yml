@@ -38,4 +38,4 @@ jobs:
         run: cmake -B build -S .
 
       - name: Build (Windows)
-      - run: cmake --build build
+        run: cmake --build build
