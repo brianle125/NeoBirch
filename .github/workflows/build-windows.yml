@@ -1,0 +1,41 @@
+name: Build NeoBirch (windows)
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }} (${{ matrix.arch }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            arch: x64
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install conan
+        run: |
+          pip install conan
+
+      - name: Setup conan profile
+        run: conan profile detect
+
+      - name: Install dependencies
+        run: conan install . --build=missing --output-folder build
+      
+      - name: Configure CMake
+        run: cmake -B build -S .
+
+      - name: Build (Windows)
+      - run: cmake --build build
