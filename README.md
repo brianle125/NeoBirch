@@ -31,19 +31,18 @@ $ pip install conan
 2. Navigate to BirchEngine/ and create a build directory
 ```bash
 $ mkdir build
-$ cd build
 ```
 3. Build dependencies, create build environment and build.
 
     1. Download dependencies
     ```bash
-    $ conan install .. -s build_type=Debug --build=missing --output-folder=build
+    $ conan install . -s build_type=Debug --build=missing --output-folder=build
     ```
     2. Configure cmake and run the build.
     ```bash
-    $ cmake -G "Visual Studio 16 2019" -A x64 ..
+    $ cmake -G "Visual Studio 16 2019" -A x64 -B build
     ```
     3. Open the generated .sln file or run build with
     ```bash
-    $ cmake --build . --preset conan-debug
+    $ cmake --build build --preset conan-debug
     ```
