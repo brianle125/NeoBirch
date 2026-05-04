@@ -1,4 +1,4 @@
-name: Build NeoBirch (windows)
+name: Build NeoBirch (Windows)
 
 on:
   pull_request:
@@ -35,7 +35,10 @@ jobs:
         run: conan install . --build=missing --output-folder build
       
       - name: Configure CMake
-        run: cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE="build/conan_toolchain.cmake"
+        run: cmake -S . -B build --preset conan-default
+
+      - name: Inspect Conan output
+        run: dir build
 
       - name: Build (Windows)
-        run: cmake --build build
+        run: cmake --build build --preset conan-release
