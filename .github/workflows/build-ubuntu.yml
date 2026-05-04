@@ -1,8 +1,6 @@
 name: Build BirchEngine
 
 on:
-  push:
-    branches: [ master, add-workflow ]
   pull_request:
     branches: [ master ]
 
