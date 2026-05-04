@@ -1,0 +1,42 @@
+name: Build BirchEngine
+
+on:
+  push:
+    branches: [ master, add-workflow ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }} (${{ matrix.arch }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            arch: x64
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      # ---------------- LINUX BUILD ----------------
+      - name: Install SDL2 (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake build-essential libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev pkg-config
+
+      - name: Configure CMake (Linux)
+        if: runner.os == 'Linux'
+        run: cmake -B build -S . -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build (Linux)
+        if: runner.os == 'Linux'
+        run: cmake --build build
+
+      # ---------------- POST-BUILD ----------------
+      - name: Verify executable
+        run: |
+          ls -R build || dir build
