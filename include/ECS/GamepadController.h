@@ -7,7 +7,7 @@
 #include "SpriteComponent.h"
 #include "ShootingComponent.h"
 
-#include <SDL_joystick.h>
+#include <SDL_gamecontroller.h>
 
 static constexpr int AXIS_X = 0;
 static constexpr int AXIS_Y = 1;
@@ -39,7 +39,6 @@ public:
   }
 
   void processJoystick() {
-
     Sint16 xAxis = SDL_GameControllerGetAxis(controller, SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTX);
     Sint16 yAxis = SDL_GameControllerGetAxis(controller, SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTY);
 
@@ -71,6 +70,26 @@ public:
     }
   }
 
+  void processButtons() {    
+    if(SDL_GameControllerGetButton(controller, SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_UP)) {
+      transform->velocity.y = Gamepad::DIR_NEGATIVE;
+    }
+    else if(SDL_GameControllerGetButton(controller, SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_DOWN)) {
+      transform->velocity.y = Gamepad::DIR_POSITIVE;
+    } 
+    else if(SDL_GameControllerGetButton(controller, SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_RIGHT)) {
+      transform->velocity.x = Gamepad::DIR_NEGATIVE;
+    } 
+    else if(SDL_GameControllerGetButton(controller, SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_LEFT)) {
+      transform->velocity.x = Gamepad::DIR_POSITIVE;
+    }
+    else {
+      transform->velocity.x = 0;
+      transform->velocity.y = 0;
+    }
+  }
+
+
   void init() override {
     transform = &entity->getComponent<TransformComponent>();
     shooter = &entity->getComponent<ShootingComponent>();
@@ -78,19 +97,18 @@ public:
     controller = findController();
 
     if(!controller) {
-      std::cout << "Unable to read controller!" << std::endl;
+      std::cerr << "Unable to read controller!" << std::endl;
     }
   }
 
   void update() override {
     processJoystick();
+    processButtons();
   }
+
 private:
   TransformComponent *transform;
   ShootingComponent *shooter;
   SpriteComponent *sprite;
   SDL_GameController* controller;
-
-  int xDir;
-  int yDir;
 };
