@@ -11,7 +11,7 @@
 
 static constexpr int AXIS_X = 0;
 static constexpr int AXIS_Y = 1;
-static constexpr int JOYSTICK_DEAD_ZONE = 3000;
+static constexpr int JOYSTICK_DEAD_ZONE = 4000;
 
 namespace Gamepad {
   enum Direction { 
@@ -25,23 +25,23 @@ namespace Gamepad {
 class GamepadController : public Component {
 public:
   ~GamepadController() {
-    SDL_JoystickClose(gamepad);
+    SDL_GameControllerClose(controller);
   }
 
-  void init() override {
-    transform = &entity->getComponent<TransformComponent>();
-    shooter = &entity->getComponent<ShootingComponent>();
-    sprite = &entity->getComponent<SpriteComponent>();
-    gamepad = SDL_JoystickOpen(0);
-
-    if(SDL_NumJoysticks() <= 0 || gamepad == NULL) {
-      std::cout << "Unable to read controller!" << std::endl;
+  SDL_GameController *findController() {
+    for (int i = 0; i < SDL_NumJoysticks(); i++) {
+        if (SDL_IsGameController(i)) {
+            return SDL_GameControllerOpen(i);
+        }
     }
+
+    return nullptr;
   }
 
-  void update() override {
-    Sint16 xAxis = SDL_JoystickGetAxis(gamepad, AXIS_X);
-    Sint16 yAxis = SDL_JoystickGetAxis(gamepad, AXIS_Y);
+  void processJoystick() {
+
+    Sint16 xAxis = SDL_GameControllerGetAxis(controller, SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTX);
+    Sint16 yAxis = SDL_GameControllerGetAxis(controller, SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTY);
 
     transform->velocity.x = 0;
     transform->velocity.y = 0;
@@ -69,12 +69,27 @@ public:
         transform->velocity.y = 0;
         sprite->Play("Idle");
     }
-}
+  }
+
+  void init() override {
+    transform = &entity->getComponent<TransformComponent>();
+    shooter = &entity->getComponent<ShootingComponent>();
+    sprite = &entity->getComponent<SpriteComponent>();
+    controller = findController();
+
+    if(!controller) {
+      std::cout << "Unable to read controller!" << std::endl;
+    }
+  }
+
+  void update() override {
+    processJoystick();
+  }
 private:
   TransformComponent *transform;
   ShootingComponent *shooter;
   SpriteComponent *sprite;
-  SDL_Joystick* gamepad;
+  SDL_GameController* controller;
 
   int xDir;
   int yDir;
