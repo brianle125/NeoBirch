@@ -38,7 +38,8 @@ public:
     return nullptr;
   }
 
-  void processJoystick() {
+  void processMovement() {
+    // Joystick
     Sint16 xAxis = SDL_GameControllerGetAxis(controller, SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTX);
     Sint16 yAxis = SDL_GameControllerGetAxis(controller, SDL_GameControllerAxis::SDL_CONTROLLER_AXIS_LEFTY);
 
@@ -60,6 +61,20 @@ public:
         transform->velocity.y = Gamepad::DIR_POSITIVE;
     }
 
+    // D-pad
+    if(SDL_GameControllerGetButton(controller, SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_UP)) {
+      transform->velocity.y = Gamepad::DIR_NEGATIVE;
+    }
+    else if(SDL_GameControllerGetButton(controller, SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_DOWN)) {
+      transform->velocity.y = Gamepad::DIR_POSITIVE;
+    } 
+    else if(SDL_GameControllerGetButton(controller, SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_RIGHT)) {
+      transform->velocity.x = Gamepad::DIR_POSITIVE;
+    } 
+    else if(SDL_GameControllerGetButton(controller, SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_LEFT)) {
+      transform->velocity.x = Gamepad::DIR_NEGATIVE;
+    }
+    
     
     if(transform->velocity.x != 0 || transform->velocity.y != 0) {
         sprite->Play("Walk");
@@ -71,22 +86,7 @@ public:
   }
 
   void processButtons() {    
-    if(SDL_GameControllerGetButton(controller, SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_UP)) {
-      transform->velocity.y = Gamepad::DIR_NEGATIVE;
-    }
-    else if(SDL_GameControllerGetButton(controller, SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_DOWN)) {
-      transform->velocity.y = Gamepad::DIR_POSITIVE;
-    } 
-    else if(SDL_GameControllerGetButton(controller, SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_RIGHT)) {
-      transform->velocity.x = Gamepad::DIR_NEGATIVE;
-    } 
-    else if(SDL_GameControllerGetButton(controller, SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_LEFT)) {
-      transform->velocity.x = Gamepad::DIR_POSITIVE;
-    }
-    else {
-      transform->velocity.x = 0;
-      transform->velocity.y = 0;
-    }
+    
   }
 
 
@@ -102,8 +102,7 @@ public:
   }
 
   void update() override {
-    processJoystick();
-    processButtons();
+    processMovement();
   }
 
 private:
