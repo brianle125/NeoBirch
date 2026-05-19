@@ -9,8 +9,6 @@
 
 #include <SDL_gamecontroller.h>
 
-static constexpr int AXIS_X = 0;
-static constexpr int AXIS_Y = 1;
 static constexpr int JOYSTICK_DEAD_ZONE = 4000;
 
 namespace Gamepad {
@@ -53,7 +51,6 @@ public:
         transform->velocity.x = Gamepad::DIR_POSITIVE;
     }
 
-
     if (yAxis < -JOYSTICK_DEAD_ZONE) {
         transform->velocity.y = Gamepad::DIR_NEGATIVE;
     }
@@ -84,11 +81,6 @@ public:
         sprite->Play("Idle");
     }
   }
-
-  void processButtons() {    
-    
-  }
-
 
   void init() override {
     transform = &entity->getComponent<TransformComponent>();
