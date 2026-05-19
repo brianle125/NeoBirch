@@ -23,17 +23,16 @@ namespace Gamepad {
 class GamepadController : public Component {
 public:
   ~GamepadController() {
-    SDL_GameControllerClose(controller);
+    if(controller) {
+      SDL_GameControllerClose(controller);
+    }
   }
 
-  SDL_GameController *findController() {
-    for (int i = 0; i < SDL_NumJoysticks(); i++) {
-        if (SDL_IsGameController(i)) {
-            return SDL_GameControllerOpen(i);
-        }
+  void onControllerDisconnected() {
+    if(controller) {
+      SDL_GameControllerClose(controller);
+      controller = nullptr;
     }
-
-    return nullptr;
   }
 
   void processMovement() {
@@ -72,7 +71,6 @@ public:
       transform->velocity.x = Gamepad::DIR_NEGATIVE;
     }
     
-    
     if(transform->velocity.x != 0 || transform->velocity.y != 0) {
         sprite->Play("Walk");
     } else {
@@ -89,15 +87,30 @@ public:
     controller = findController();
 
     if(!controller) {
-      std::cerr << "Unable to read controller!" << std::endl;
+      std::cout << "Controller not detected.\n";
     }
   }
 
   void update() override {
+    if(!controller) {
+      controller = findController();
+      if(!controller) return;
+      std::cout << "Controller detected.\n";
+    }
     processMovement();
   }
 
 private:
+  SDL_GameController *findController() {
+    for (int i = 0; i < SDL_NumJoysticks(); i++) {
+        if (SDL_IsGameController(i)) {
+            return SDL_GameControllerOpen(i);
+        }
+    }
+
+    return nullptr;
+  }
+
   TransformComponent *transform;
   ShootingComponent *shooter;
   SpriteComponent *sprite;
