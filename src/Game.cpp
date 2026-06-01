@@ -103,6 +103,9 @@ auto &projectiles(manager.getGroup(Game::groupProjectiles));
 void Game::handleEvents() {
   while(SDL_PollEvent(&event)) {
     switch (event.type) {
+      case SDL_CONTROLLERDEVICEREMOVED:
+        player.getComponent<GamepadController>().onControllerDisconnected();
+        break;
       case SDL_QUIT:
         isRunning = false;
         break;

@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
   int frameTime;
 
   game = std::make_unique<Game>();
-  game->init("BirchEngine Revamped", WINDOW_WIDTH, WINDOW_HEIGHT, false);
+  game->init("NeoBirch", WINDOW_WIDTH, WINDOW_HEIGHT, false);
 
   while (game->running()) {
     frameStart = SDL_GetTicks();
