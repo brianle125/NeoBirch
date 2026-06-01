@@ -48,6 +48,7 @@ public:
       sprite->spriteFlip = SDL_FLIP_HORIZONTAL;
     } else if (xAxis > JOYSTICK_DEAD_ZONE) {
         transform->velocity.x = Gamepad::DIR_POSITIVE;
+        sprite->spriteFlip = SDL_FLIP_NONE;
     }
 
     if (yAxis < -JOYSTICK_DEAD_ZONE) {
@@ -66,9 +67,11 @@ public:
     } 
     else if(SDL_GameControllerGetButton(controller, SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_RIGHT)) {
       transform->velocity.x = Gamepad::DIR_POSITIVE;
+      sprite->spriteFlip = SDL_FLIP_NONE;
     } 
     else if(SDL_GameControllerGetButton(controller, SDL_GameControllerButton::SDL_CONTROLLER_BUTTON_DPAD_LEFT)) {
       transform->velocity.x = Gamepad::DIR_NEGATIVE;
+      sprite->spriteFlip = SDL_FLIP_HORIZONTAL;
     }
     
     if(transform->velocity.x != 0 || transform->velocity.y != 0) {
