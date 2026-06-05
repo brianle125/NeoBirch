@@ -5,6 +5,11 @@
 #include "TransformComponent.h"
 #include <SDL.h>
 
+enum ColliderTag {
+  Player,
+  Terrain
+};
+
 class ColliderComponent : public Component {
 public:
   SDL_Rect collider;
