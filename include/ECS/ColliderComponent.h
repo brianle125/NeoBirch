@@ -5,20 +5,23 @@
 #include "TransformComponent.h"
 #include <SDL.h>
 
+enum ColliderTag {
+  Player,
+  Terrain
+};
+
+static constexpr int ColliderWidth = 32;
+static constexpr int ColliderHeight = 32;
+
 class ColliderComponent : public Component {
 public:
   SDL_Rect collider;
-  std::string tag;
+  std::string tagId;
 
-  SDL_Texture *tex;
-  SDL_Rect srcR, destR;
-
-  TransformComponent *transform;
-
-  ColliderComponent(std::string t) { tag = t; }
+  ColliderComponent(std::string t) { tagId = t; }
 
   ColliderComponent(std::string t, int xpos, int ypos, int size) {
-    tag = t;
+    tagId = t;
     collider.x = xpos;
     collider.y = ypos;
     collider.h = collider.w = size;
@@ -32,12 +35,12 @@ public:
     transform = &entity->getComponent<TransformComponent>();
 
     tex = TextureManager::LoadTexture("assets/coltex.png");
-    srcR = {0, 0, 32, 32};
+    srcR = {0, 0, ColliderWidth, ColliderHeight};
     destR = {collider.x, collider.y, collider.w, collider.h};
   }
 
   void update() override {
-    if (tag != "terrain") {
+    if (tagId != "terrain") {
       collider.x = static_cast<int>(transform->position.x);
       collider.y = static_cast<int>(transform->position.y);
       collider.w = transform->width * transform->scale;
@@ -53,4 +56,7 @@ public:
   }
 
 private:
+  SDL_Texture *tex;
+  SDL_Rect srcR, destR;
+  TransformComponent *transform;
 };
