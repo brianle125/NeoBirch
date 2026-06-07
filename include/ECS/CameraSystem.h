@@ -1,4 +1,5 @@
 #include "ECS.h"
+#include "TransformComponent.h"
 #include <SDL.h>
 
 class CameraSystem : public System {

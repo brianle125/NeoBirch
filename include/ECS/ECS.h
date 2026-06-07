@@ -8,6 +8,7 @@
 
 class Component;
 class Entity;
+class System;
 class Manager;
 
 using ComponentID = std::size_t;
@@ -35,11 +36,11 @@ using ComponentArray = std::array<Component *, maxComponents>;
 class Component {
 public:
   Entity *entity;
+  virtual ~Component() {}
 
   virtual void init() {}
   virtual void update() {}
   virtual void draw() {}
-  virtual ~Component() {}
 };
 
 class Entity {
@@ -112,6 +113,11 @@ public:
     auto ptr(componentArray[getComponentTypeID<T>()]);
     return *static_cast<T *>(ptr);
   }
+};
+
+class System {
+  public:
+    virtual void update(std::vector<Entity*>&) = 0;
 };
 
 class Manager {
