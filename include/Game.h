@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ECS/CameraSystem.h"
+
 #include "SDL.h"
 #include "SDL_image.h"
 #include "SDL_mixer.h"
@@ -30,10 +32,12 @@ public:
   enum groupLabels : std::size_t {
     groupMap,
     groupPlayers,
+    groupMobs,
     groupColliders,
     groupProjectiles
   };
 
 private:
   SDL_Window *window;
+  std::unique_ptr<CameraSystem> cameraSystem;
 };

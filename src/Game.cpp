@@ -60,6 +60,8 @@ void Game::init(const char *title, int width, int height, bool fullscreen) {
     isRunning = true;
   }
 
+  cameraSystem = std::make_unique<CameraSystem>(camera);
+
   // Init the font
   if (TTF_Init() == -1) {
     std::cerr << "Error : SDL_TTF" << std::endl;
@@ -91,8 +93,8 @@ void Game::init(const char *title, int width, int height, bool fullscreen) {
   label.addComponent<UILabel>(10, 10, "Loading...", FontId::Arial, white);
 
   // These are here to test projectile/player collision
-	assets->CreateProjectile(Vector2D(600, 600), Vector2D(2,0),200, 2, TextureId::Projectile);
-	assets->CreateProjectile(Vector2D(600, 620), Vector2D(2, 0), 200, 2, TextureId::Projectile);
+	// assets->CreateProjectile(Vector2D(600, 600), Vector2D(2,0),200, 2, TextureId::Projectile);
+	// assets->CreateProjectile(Vector2D(600, 620), Vector2D(2, 0), 200, 2, TextureId::Projectile);
 }
 
 auto &tiles(manager.getGroup(Game::groupMap));
@@ -187,21 +189,7 @@ void Game::update() {
       }
     }
 
-    // Camera follows the first active player
-    camera.x = static_cast<int>(transform.position.x - 400);
-    camera.y = static_cast<int>(transform.position.y - 320);
-
-    if (camera.x < 0)
-      camera.x = 0;
-    if (camera.y < 0)
-      camera.y = 0;
-    if (camera.x > camera.w)
-      camera.x = camera.w;
-    if (camera.y > camera.h)
-      camera.y = camera.h;
-
-    // Only follow the first active player
-    break;
+    cameraSystem->update(players);
   }
 }
 
