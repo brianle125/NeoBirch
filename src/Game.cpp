@@ -190,10 +190,6 @@ void Game::update() {
     }
 
     cameraSystem->update(players);
-
-
-    // Only follow the first active player
-    break;
   }
 }
 
