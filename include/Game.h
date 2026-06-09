@@ -1,7 +1,5 @@
 #pragma once
 
-#include "ECS/CameraSystem.h"
-
 #include "SDL.h"
 #include "SDL_image.h"
 #include "SDL_mixer.h"
@@ -11,6 +9,8 @@
 
 class AssetManager;
 class ColliderComponent;
+class CameraSystem;
+class PhysicsSystem;
 
 class Game {
 public:
@@ -40,4 +40,5 @@ public:
 private:
   SDL_Window *window;
   std::unique_ptr<CameraSystem> cameraSystem;
+  std::unique_ptr<PhysicsSystem> physicsSystem;
 };

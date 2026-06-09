@@ -4,6 +4,8 @@
 #include "Collision.h"
 #include "Config.h"
 #include "ECS/Components.h"
+#include "ECS/CameraSystem.h"
+#include "ECS/PhysicsSystem.h"
 #include "Map.h"
 #include "TextureManager.h"
 #include "Vector2D.h"
