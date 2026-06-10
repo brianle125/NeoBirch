@@ -146,6 +146,8 @@ void Game::update() {
   manager.update();
 
   physicsSystem->update(players);
+
+  // Handle collision for all players
   for (auto &playerEntity : players) {
     for (auto &proj : projectiles) {
       if (Collision::AABB(
