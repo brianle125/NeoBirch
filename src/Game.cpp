@@ -79,7 +79,6 @@ void Game::init(const char *title, int width, int height, bool fullscreen) {
   assets->AddFont(FontId::Arial);
 
   map = std::make_unique<Map>(TextureId::Terrain, MAP_SCALE, TILE_SIZE);
-  // ecs implementation
   map->LoadMap("assets/map.map", 25, 20);
 
   // Components must be added in ordered sequence.
@@ -147,8 +146,6 @@ void Game::update() {
   manager.update();
 
   physicsSystem->update(players);
-
-  // Handle collision for all players
   for (auto &playerEntity : players) {
     for (auto &proj : projectiles) {
       if (Collision::AABB(
