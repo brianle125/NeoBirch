@@ -30,6 +30,11 @@ HealthComponent *testPtr = nullptr;
 auto &player(manager.addEntity());
 auto &label(manager.addEntity());
 
+auto &tiles(manager.getGroup(Game::groupMap));
+auto &players(manager.getGroup(Game::groupPlayers));
+auto &colliders(manager.getGroup(Game::groupColliders));
+auto &projectiles(manager.getGroup(Game::groupProjectiles));
+
 Game::Game() {}
 
 Game::~Game() {
@@ -62,8 +67,6 @@ void Game::init(const char *title, int width, int height, bool fullscreen) {
     isRunning = true;
   }
 
-  cameraSystem = std::make_unique<CameraSystem>(camera);
-
   // Init the font
   if (TTF_Init() == -1) {
     std::cerr << "Error : SDL_TTF" << std::endl;
@@ -94,15 +97,13 @@ void Game::init(const char *title, int width, int height, bool fullscreen) {
   SDL_Color white = {255, 255, 255, 255};
   label.addComponent<UILabel>(10, 10, "Loading...", FontId::Arial, white);
 
+  cameraSystem = std::make_unique<CameraSystem>(camera);
+  physicsSystem = std::make_unique<PhysicsSystem>(manager, colliders);
+
   // These are here to test projectile/player collision
 	// assets->CreateProjectile(Vector2D(600, 600), Vector2D(2,0),200, 2, TextureId::Projectile);
 	// assets->CreateProjectile(Vector2D(600, 620), Vector2D(2, 0), 200, 2, TextureId::Projectile);
 }
-
-auto &tiles(manager.getGroup(Game::groupMap));
-auto &players(manager.getGroup(Game::groupPlayers));
-auto &colliders(manager.getGroup(Game::groupColliders));
-auto &projectiles(manager.getGroup(Game::groupProjectiles));
 
 void Game::handleEvents() {
   while(SDL_PollEvent(&event)) {
@@ -145,39 +146,10 @@ void Game::update() {
   manager.refresh();
   manager.update();
 
+  physicsSystem->update(players);
+
   // Handle collision for all players
   for (auto &playerEntity : players) {
-    if (!playerEntity->isActive())
-      continue;
-
-    auto &transform = playerEntity->getComponent<TransformComponent>();
-    auto &collider = playerEntity->getComponent<ColliderComponent>();
-    Vector2D oldPos = transform.position;
-
-    transform.position.x += transform.velocity.x;
-    collider.update();
-    for (auto &c : colliders) {
-      if (Collision::AABB(c->getComponent<ColliderComponent>().collider,
-                          collider.collider)) {
-        transform.position.x = oldPos.x;
-        transform.velocity.x = 0;
-        collider.update();
-        break;
-      }
-    }
-
-    transform.position.y += transform.velocity.y;
-    collider.update();
-    for (auto &c : colliders) {
-      if (Collision::AABB(c->getComponent<ColliderComponent>().collider,
-                          collider.collider)) {
-        transform.position.y = oldPos.y;
-        transform.velocity.y = 0;
-        collider.update();
-        break;
-      }
-    }
-
     for (auto &proj : projectiles) {
       if (Collision::AABB(
               playerEntity->getComponent<ColliderComponent>().collider,
@@ -190,9 +162,9 @@ void Game::update() {
         // playerEntity->destroy();
       }
     }
-
-    cameraSystem->update(players);
   }
+
+  cameraSystem->update(players);
 }
 
 void Game::render() {
