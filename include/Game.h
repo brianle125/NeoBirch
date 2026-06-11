@@ -11,6 +11,7 @@ class AssetManager;
 class ColliderComponent;
 class CameraSystem;
 class PhysicsSystem;
+class ProjectileSystem;
 
 class Game {
 public:
@@ -41,4 +42,5 @@ private:
   SDL_Window *window;
   std::unique_ptr<CameraSystem> cameraSystem;
   std::unique_ptr<PhysicsSystem> physicsSystem;
+  std::unique_ptr<ProjectileSystem> projectileSystem;
 };

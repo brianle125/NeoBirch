@@ -6,6 +6,7 @@
 #include "ECS/Components.h"
 #include "ECS/CameraSystem.h"
 #include "ECS/PhysicsSystem.h"
+#include "ECS/ProjectileSystem.h"
 #include "Map.h"
 #include "TextureManager.h"
 #include "Vector2D.h"
@@ -98,10 +99,11 @@ void Game::init(const char *title, int width, int height, bool fullscreen) {
 
   cameraSystem = std::make_unique<CameraSystem>(camera);
   physicsSystem = std::make_unique<PhysicsSystem>(manager, colliders);
+  projectileSystem = std::make_unique<ProjectileSystem>(projectiles);
 
   // These are here to test projectile/player collision
-	// assets->CreateProjectile(Vector2D(600, 600), Vector2D(2,0),200, 2, TextureId::Projectile);
-	// assets->CreateProjectile(Vector2D(600, 620), Vector2D(2, 0), 200, 2, TextureId::Projectile);
+	assets->CreateProjectile(Vector2D(600, 600), Vector2D(2,0),200, 2, TextureId::Projectile);
+	assets->CreateProjectile(Vector2D(600, 620), Vector2D(2, 0), 200, 2, TextureId::Projectile);
 }
 
 void Game::handleEvents() {
@@ -145,22 +147,9 @@ void Game::update() {
   manager.refresh();
   manager.update();
 
+  
   physicsSystem->update(players);
-  for (auto &playerEntity : players) {
-    for (auto &proj : projectiles) {
-      if (Collision::AABB(
-              playerEntity->getComponent<ColliderComponent>().collider,
-              proj->getComponent<ColliderComponent>().collider)) {
-        std::cout << "Hit player!" << std::endl;
-        proj->destroy();
-        
-        // Optionally handle health/damage here
-        playerEntity->getComponent<HealthComponent>().takeDamage(5);
-        // playerEntity->destroy();
-      }
-    }
-  }
-
+  projectileSystem->update(players);
   cameraSystem->update(players);
 }
 
