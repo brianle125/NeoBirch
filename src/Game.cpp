@@ -102,8 +102,8 @@ void Game::init(const char *title, int width, int height, bool fullscreen) {
   projectileSystem = std::make_unique<ProjectileSystem>(projectiles);
 
   // These are here to test projectile/player collision
-	assets->CreateProjectile(Vector2D(600, 600), Vector2D(2,0),200, 2, TextureId::Projectile);
-	assets->CreateProjectile(Vector2D(600, 620), Vector2D(2, 0), 200, 2, TextureId::Projectile);
+	// assets->CreateProjectile(Vector2D(600, 600), Vector2D(2,0),200, 2, TextureId::Projectile);
+	// assets->CreateProjectile(Vector2D(600, 620), Vector2D(2, 0), 200, 2, TextureId::Projectile);
 }
 
 void Game::handleEvents() {
