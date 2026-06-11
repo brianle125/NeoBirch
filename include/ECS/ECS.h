@@ -99,8 +99,8 @@ public:
     ComponentID id = getComponentTypeID<T>();
 
     if (componentBitset[id]) {
-      std::erase_if(components, [id](const std::unique_ptr<Component>& c) { 
-        return getComponentTypeID<T>() == id; 
+      std::erase_if(components, [](const std::unique_ptr<Component>& c) { 
+        return c && dynamic_cast<T*>(c.get()) != nullptr; 
       });
 
       componentArray[id] = nullptr;
@@ -140,14 +140,6 @@ public:
       std::erase_if(v, [i](Entity* mEntity) {
         return !mEntity->isActive() || !mEntity->hasGroup(i);
       });
-
-      // pre c++20
-      // v.erase(std::remove_if(std::begin(v), std::end(v),
-      //                        [i](Entity *mEntity) {
-      //                          return !mEntity->isActive() ||
-      //                                 !mEntity->hasGroup(i);
-      //                        }),
-      //         std::end(v));
     }
 
     std::erase_if(entities, [](const std::unique_ptr<Entity>& mEntity) {
