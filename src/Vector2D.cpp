@@ -36,9 +36,9 @@ Vector2D &Vector2D::Divide(const Vector2D &vec) {
 }
 
 // Compute the Euclidean distance between two vectors
-float dist(Vector2D& v1, Vector2D& v2) {
-  float x_squared = pow((v1.x + v2.x), 2.0);
-  float y_squared = pow((v1.y + v2.y), 2.0);
+float Vector2D::dist(Vector2D& v2) {
+  float x_squared = pow((x + v2.x), 2.0);
+  float y_squared = pow((y + v2.y), 2.0);
   return sqrt(x_squared + y_squared);
 }
 
@@ -98,7 +98,14 @@ Vector2D operator*(int scalar, const Vector2D &v) {
   return Vector2D(v.x * scalar, v.y * scalar);
 }
 
+float dist(const Vector2D& v1, const Vector2D v2) {
+  float x_squared = pow((v1.x + v2.x), 2.0);
+  float y_squared = pow((v1.y + v2.y), 2.0);
+  return sqrt(x_squared + y_squared);
+}
+
 std::ostream &operator<<(std::ostream &stream, const Vector2D &vec) {
   stream << "(" << vec.x << "," << vec.y << ")";
   return stream;
 }
+

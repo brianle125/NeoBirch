@@ -14,7 +14,7 @@ public:
   Vector2D &Multiply(const Vector2D &vec);
   Vector2D &Divide(const Vector2D &vec);
   
-  float dist(Vector2D& v1, Vector2D& v2);
+  float dist(Vector2D& v2);
 
   Vector2D &operator+=(const Vector2D &vec);
   Vector2D &operator-=(const Vector2D &vec);
@@ -39,3 +39,5 @@ Vector2D operator*(const Vector2D &v, float scalar);
 Vector2D operator*(float scalar, const Vector2D &v);
 Vector2D operator*(const Vector2D &v, int scalar);
 Vector2D operator*(int scalar, const Vector2D &v);
+
+float dist(const Vector2D& v1, const Vector2D v2);
