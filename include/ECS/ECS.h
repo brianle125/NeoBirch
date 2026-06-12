@@ -5,6 +5,7 @@
 #include <iostream>
 #include <memory>
 #include <vector>
+#include <cassert>
 
 class Component;
 class Entity;
@@ -78,6 +79,10 @@ public:
     return componentBitset[getComponentTypeID<T>()];
   }
 
+  size_t componentCount() {
+    return components.size();
+  }
+
   // Add a component to the entity.
   template <typename T, typename... TArgs> 
   T &addComponent(TArgs &&...mArgs) {
@@ -99,7 +104,7 @@ public:
     ComponentID id = getComponentTypeID<T>();
 
     if (componentBitset[id]) {
-      std::erase_if(components, [](const std::unique_ptr<Component>& c) { 
+      std::erase_if(components, [id](const std::unique_ptr<Component>& c) { 
         return c && dynamic_cast<T*>(c.get()) != nullptr; 
       });
 
@@ -110,6 +115,8 @@ public:
 
   template <typename T> 
   T &getComponent() const {
+    assert(hasComponent<T>());
+
     auto ptr(componentArray[getComponentTypeID<T>()]);
     return *static_cast<T *>(ptr);
   }
