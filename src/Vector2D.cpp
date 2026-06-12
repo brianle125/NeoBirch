@@ -1,4 +1,5 @@
 #include "Vector2D.h"
+#include <cmath>
 
 Vector2D::Vector2D() : x(0.0f), y(0.0f) {}
 
@@ -32,6 +33,13 @@ Vector2D &Vector2D::Divide(const Vector2D &vec) {
   else
     y = 0.0f;
   return *this;
+}
+
+// Compute the Euclidean distance between two vectors
+float dist(Vector2D& v1, Vector2D& v2) {
+  float x_squared = pow((v1.x + v2.x), 2.0);
+  float y_squared = pow((v1.y + v2.y), 2.0);
+  return sqrt(x_squared + y_squared);
 }
 
 Vector2D &Vector2D::operator+=(const Vector2D &vec) { return Add(vec); }

@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "ComponentsTest.h"
+#include "testComponents.h"
 
 // Tests for adding components
 TEST_F(ECSComponentTest, AddSingleComponent) {

@@ -75,7 +75,7 @@ endfunction()
 include(CMake/Utils.cmake)
 include(CMake/GlobalSettingsInclude.cmake OPTIONAL)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-set(PROJECT_NAME BirchEngine)
+set(PROJECT_NAME NeoBirch)
 
 ################################################################################
 # Source files
@@ -223,23 +223,4 @@ endif()
 # Testing Configuration
 ################################################################################
 enable_testing()
-
-find_package(GTest REQUIRED CONFIG)
-
-file(GLOB_RECURSE TEST_SOURCES "test/*.cpp")
-
-add_executable(${PROJECT_NAME}_Tests ${TEST_SOURCES} ${HEADERS})
-
-target_include_directories(${PROJECT_NAME}_Tests PRIVATE
-    "${CMAKE_CURRENT_SOURCE_DIR}/include"
-)
-
-target_link_libraries(${PROJECT_NAME}_Tests PRIVATE
-    GTest::gtest
-    GTest::gtest_main
-)
-
-include(GoogleTest)
-
-# Register tests with CTest
-gtest_discover_tests(${PROJECT_NAME}_Tests)
+add_subdirectory(test)
