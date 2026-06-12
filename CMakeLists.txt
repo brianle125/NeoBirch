@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.16.0)
 
 set(CMAKE_SYSTEM_VERSION 10.0 CACHE STRING "" FORCE)
-
-# Include Conan-generated toolchain file
 include(${CMAKE_BINARY_DIR}/conan_toolchain.cmake OPTIONAL)
 
 project(BirchEngine CXX)
@@ -219,8 +217,5 @@ if(MSVC)
     endif()
 endif()
 
-################################################################################
-# Testing Configuration
-################################################################################
 enable_testing()
 add_subdirectory(test)
