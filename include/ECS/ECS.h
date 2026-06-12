@@ -104,7 +104,7 @@ public:
     ComponentID id = getComponentTypeID<T>();
 
     if (componentBitset[id]) {
-      std::erase_if(components, [id](const std::unique_ptr<Component>& c) { 
+      std::erase_if(components, [](const std::unique_ptr<Component>& c) { 
         return c && dynamic_cast<T*>(c.get()) != nullptr; 
       });
 
