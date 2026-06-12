@@ -49,6 +49,7 @@ TEST_F(ECSComponentTest, RemoveComponent) {
   entity.removeComponent<PositionComponent>();
 
   EXPECT_FALSE(entity.hasComponent<PositionComponent>());
+  EXPECT_EQ(entity.componentCount(), 0);
 }
 
 TEST_F(ECSComponentTest, RemoveComponentFromMultipleComponents) {
@@ -62,7 +63,8 @@ TEST_F(ECSComponentTest, RemoveComponentFromMultipleComponents) {
   EXPECT_TRUE(entity.hasComponent<HealthComponent>());
 
   entity.removeComponent<VelocityComponent>();
-
+  
+  EXPECT_EQ(entity.componentCount(), 2);
   EXPECT_TRUE(entity.hasComponent<PositionComponent>());
   EXPECT_FALSE(entity.hasComponent<VelocityComponent>());
   EXPECT_TRUE(entity.hasComponent<HealthComponent>());
@@ -77,6 +79,7 @@ TEST_F(ECSComponentTest, RemoveNonExistentComponent) {
 
   EXPECT_TRUE(entity.hasComponent<PositionComponent>());
   EXPECT_FALSE(entity.hasComponent<VelocityComponent>());
+  EXPECT_EQ(entity.componentCount(), 1);
 }
 
 TEST_F(ECSComponentTest, AddComponentAfterRemoving) {
@@ -106,6 +109,7 @@ TEST_F(ECSComponentTest, RemoveAllComponents) {
   EXPECT_FALSE(entity.hasComponent<PositionComponent>());
   EXPECT_FALSE(entity.hasComponent<VelocityComponent>());
   EXPECT_FALSE(entity.hasComponent<HealthComponent>());
+  EXPECT_EQ(entity.componentCount(), 0);
 }
 
 TEST_F(ECSComponentTest, ComponentRetainsData) {
