@@ -66,5 +66,4 @@ target_link_libraries(NeoBirchTests PRIVATE
 
 include(GoogleTest)
 
-# Register tests with CTest
 gtest_discover_tests(NeoBirchTests)
