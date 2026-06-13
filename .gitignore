@@ -26,6 +26,7 @@ compile_commands.json
 *.swp
 *.swo
 *~
+.vscode/
 
 # OS artifacts
 Thumbs.db
