@@ -8,10 +8,18 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-################################################################################
-# Set target arch type if empty. Visual studio solution generator provides it.
-################################################################################
 if (MSVC)
+    # For Visual Studio, CMAKE_VS_PLATFORM_NAME is set by the generator.
+    # For other generators, fall back to CMAKE_SYSTEM_PROCESSOR
+    if(NOT CMAKE_VS_PLATFORM_NAME)
+        if("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "AMD64|x86_64|arm64")
+            set(CMAKE_VS_PLATFORM_NAME "x64")
+        elseif("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "x86|i686")
+            set(CMAKE_VS_PLATFORM_NAME "x86")
+        endif()
+    endif()
+
+
     message(STATUS "${CMAKE_VS_PLATFORM_NAME} architecture in use")
 
     if(NOT ("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64"
@@ -58,15 +66,6 @@ if(MSVC)
     set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS}")
     set(CMAKE_STATIC_LINKER_FLAGS_RELEASE "${CMAKE_STATIC_LINKER_FLAGS}")
 endif()
-
-################################################################################
-# Nuget packages function stub.
-################################################################################
-function(use_package TARGET PACKAGE VERSION)
-    message(WARNING "No implementation of use_package. Create yours. "
-                    "Package \"${PACKAGE}\" with version \"${VERSION}\" "
-                    "for target \"${TARGET}\" is ignored!")
-endfunction()
 
 ################################################################################
 # Common utils
