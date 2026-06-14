@@ -18,12 +18,21 @@ target_include_directories(NeoBirchLib PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}/../include"
 )
 
-target_link_libraries(NeoBirchLib PUBLIC
-    SDL2::SDL2-static
-    SDL2_image::SDL2_image
-    sdl_ttf::sdl_ttf
-    SDL2_mixer::SDL2_mixer
-)
+if(LINUX)
+    target_link_libraries(NeoBirchLib PRIVATE
+        SDL2::SDL2
+        SDL2_image::SDL2_image
+        SDL2_ttf::SDL2_ttf
+        SDL2_mixer::SDL2_mixer
+    )
+else()
+    target_link_libraries(NeoBirchLib PRIVATE
+        SDL2::SDL2
+        SDL2_image::SDL2_image 
+        sdl_ttf::sdl_ttf
+        SDL2_mixer::SDL2_mixer
+    )
+endif()
 
 
 add_executable(NeoBirchTests ${TEST_SOURCES})
