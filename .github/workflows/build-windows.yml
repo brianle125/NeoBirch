@@ -24,20 +24,32 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.14'
 
       - name: Install conan
         run: |
           pip install conan
 
-      - name: Setup conan profile
+      - name: Cache Conan Dependencies
+        id: cache-conan
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.USERPROFILE }}\.conan2
+          key: ${{ hashFiles('**/conanfile.txt') }}
+      - if: ${{steps.cache-conan.outputs.cache-hit != 'true'}}
+        name: Create default Conan profile
         run: conan profile detect
 
       - name: Install dependencies
-        run: conan install . --build=missing --output-folder build
+        run: conan install . --build=missing --output-folder build -c tools.cmake.cmaketoolchain:generator=Ninja
+
+      - name: Set up MSVC environment variables
+        uses: TheMrMilchmann/setup-msvc-dev@v4
+        with:
+          arch: x64
       
       - name: Configure CMake
-        run: cmake -S . -B build --preset conan-default
+        run: cmake --preset conan-release
 
       - name: Inspect Conan output
         run: dir build
