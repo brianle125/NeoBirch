@@ -37,6 +37,7 @@ if(MSVC)
     set(CMAKE_CXX_FLAGS "")
     set(CMAKE_CXX_FLAGS_DEBUG "")
     set(CMAKE_CXX_FLAGS_RELEASE "")
+    add_compile_options(/EHs)
 endif()
 
 ################################################################################

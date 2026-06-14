@@ -1,4 +1,4 @@
-find_package(gtest REQUIRED CONFIG)
+find_package(GTest REQUIRED CONFIG)
 
 set(LIB_SOURCES
     ../src/Vector2D.cpp
