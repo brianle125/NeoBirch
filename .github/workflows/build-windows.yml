@@ -29,8 +29,18 @@ jobs:
       - name: Install conan
         run: |
           pip install conan
+      
+      - name: DEBUG - List dir
+        run: ls 
 
-      - name: Setup conan profile
+      - name: Cache Conan Dependencies
+        id: cache-conan
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.USERPROFILE }}\.conan2
+          key: ${{ hashFiles('**/conanfile.txt') }}
+      - if: ${{steps.cache-conan.outputs.cache-hit != 'true'}}
+        name: Create default Conan profile
         run: conan profile detect
 
       - name: Install dependencies
@@ -38,8 +48,6 @@ jobs:
 
       - name: Set up MSVC Developer Command Prompt
         uses: TheMrMilchmann/setup-msvc-dev@v4
-        with:
-          arch: x64
       
       - name: Configure CMake
         run: cmake --preset conan-release
