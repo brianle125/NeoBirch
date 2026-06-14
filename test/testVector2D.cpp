@@ -1,4 +1,6 @@
 #include "Vector2D.h"
+
+#include <cmath>
 #include <gtest/gtest.h>
 
 class Vector2DTest : public ::testing::Test {
