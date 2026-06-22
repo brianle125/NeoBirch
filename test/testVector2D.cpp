@@ -212,6 +212,13 @@ TEST_F(Vector2DTest, ZeroMethod) {
   EXPECT_FLOAT_EQ(v.y, 0.0f);
 }
 
+TEST_F(Vector2DTest, Normalize) {
+  Vector2D v(3.0f, 4.0f);
+  Vector2D expected(0.6f, 0.8f);
+
+  EXPECT_EQ(v.normalize(), expected);
+}
+
 TEST_F(Vector2DTest, DistanceFromOrigin) {
   Vector2D v1(0.0f, 0.0f);
   Vector2D v2(3.0f, 4.0f);
@@ -222,10 +229,10 @@ TEST_F(Vector2DTest, DistanceFromOrigin) {
 
 TEST_F(Vector2DTest, DistanceBetweenTwoVectors) {
   Vector2D v1(2,4);
-  Vector2D v2(2,4);
+  Vector2D v2(4,10);
 
   float d = v1.dist(v2);
-  EXPECT_FLOAT_EQ(d, sqrt(80));
+  EXPECT_FLOAT_EQ(d, sqrt(40));
   EXPECT_FLOAT_EQ(dist(v1, v2), d);
 }
 

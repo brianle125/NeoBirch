@@ -36,9 +36,9 @@ Vector2D &Vector2D::Divide(const Vector2D &vec) {
 }
 
 // Compute the Euclidean distance between two vectors
-float Vector2D::dist(Vector2D& v2) {
-  float x_squared = pow((x + v2.x), 2.0);
-  float y_squared = pow((y + v2.y), 2.0);
+float Vector2D::dist(const Vector2D& v2) {
+  float x_squared = (v2.x - x) * (v2.x - x);
+  float y_squared = (v2.y - y) * (v2.y - y);
   return sqrt(x_squared + y_squared);
 }
 
@@ -63,6 +63,15 @@ Vector2D &Vector2D::operator*=(int scalar) {
 }
 
 Vector2D Vector2D::Zero() { return Vector2D(0.0f, 0.0f); }
+
+Vector2D Vector2D::normalize() {
+  float magnitude = sqrt(x*x + y*y);
+  if(magnitude != 0) {
+    x /= magnitude;
+    y /= magnitude;
+  }
+  return *this;
+}
 
 // Non-member operators
 Vector2D operator+(const Vector2D &v1, const Vector2D &v2) {
@@ -99,8 +108,8 @@ Vector2D operator*(int scalar, const Vector2D &v) {
 }
 
 float dist(const Vector2D& v1, const Vector2D v2) {
-  float x_squared = pow((v1.x + v2.x), 2.0);
-  float y_squared = pow((v1.y + v2.y), 2.0);
+  float x_squared = (v2.x - v1.x) * (v2.x - v1.x);
+  float y_squared = (v2.y - v1.y) * (v2.y - v1.y);
   return sqrt(x_squared + y_squared);
 }
 
