@@ -64,6 +64,13 @@ Vector2D &Vector2D::operator*=(int scalar) {
 
 Vector2D Vector2D::Zero() { return Vector2D(0.0f, 0.0f); }
 
+Vector2D Vector2D::normalize() {
+  float magnitude = sqrt(x*x + y*y);
+  x /= magnitude;
+  y /= magnitude;
+  return *this;
+}
+
 // Non-member operators
 Vector2D operator+(const Vector2D &v1, const Vector2D &v2) {
   return Vector2D(v1.x + v2.x, v1.y + v2.y);

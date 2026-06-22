@@ -13,8 +13,6 @@ public:
   Vector2D &Subtract(const Vector2D &vec);
   Vector2D &Multiply(const Vector2D &vec);
   Vector2D &Divide(const Vector2D &vec);
-  
-  float dist(Vector2D& v2);
 
   Vector2D &operator+=(const Vector2D &vec);
   Vector2D &operator-=(const Vector2D &vec);
@@ -23,7 +21,9 @@ public:
 
   Vector2D &operator*=(float scalar);
   Vector2D &operator*=(int scalar);
-
+  
+  float dist(Vector2D& v2);
+  Vector2D normalize();
   Vector2D Zero();
 
   friend std::ostream &operator<<(std::ostream &stream, const Vector2D &vec);
