@@ -5,6 +5,7 @@
 #include <iostream>
 #include <memory>
 #include <vector>
+#include <cassert>
 
 class Component;
 class Entity;
@@ -78,6 +79,10 @@ public:
     return componentBitset[getComponentTypeID<T>()];
   }
 
+  size_t componentCount() {
+    return components.size();
+  }
+
   // Add a component to the entity.
   template <typename T, typename... TArgs> 
   T &addComponent(TArgs &&...mArgs) {
@@ -110,6 +115,8 @@ public:
 
   template <typename T> 
   T &getComponent() const {
+    assert(hasComponent<T>());
+
     auto ptr(componentArray[getComponentTypeID<T>()]);
     return *static_cast<T *>(ptr);
   }

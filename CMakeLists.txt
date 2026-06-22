@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.16.0)
 
 set(CMAKE_SYSTEM_VERSION 10.0 CACHE STRING "" FORCE)
-
-# Include Conan-generated toolchain file
 include(${CMAKE_BINARY_DIR}/conan_toolchain.cmake OPTIONAL)
 
 project(BirchEngine CXX)
@@ -47,6 +45,7 @@ if(MSVC)
     set(CMAKE_CXX_FLAGS "")
     set(CMAKE_CXX_FLAGS_DEBUG "")
     set(CMAKE_CXX_FLAGS_RELEASE "")
+    add_compile_options(/EHs)
 endif()
 
 ################################################################################
@@ -74,7 +73,7 @@ endif()
 include(CMake/Utils.cmake)
 include(CMake/GlobalSettingsInclude.cmake OPTIONAL)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-set(PROJECT_NAME BirchEngine)
+set(PROJECT_NAME NeoBirch)
 
 ################################################################################
 # Source files
@@ -218,5 +217,5 @@ if(MSVC)
     endif()
 endif()
 
-
-
+enable_testing()
+add_subdirectory(test)

@@ -1,4 +1,4 @@
-# sdl-engine
+# NeoBirch
 A 2D ECS-based game engine constructed with C++ and SDL2. 
 
 Expanded from Carl Birch's BirchEngine: 
@@ -14,8 +14,9 @@ https://www.youtube.com/watch?v=QQzAHcojEKg
 - Entity health
 
 And other improvements like:
-- Cleaner code/architecture
-- Safer memory managment
+- CMake support
+- Conan package management
+- Unit tests
 
 
 ## Build Instructions
@@ -45,4 +46,3 @@ $ mkdir build
     3. Open the generated .sln file or run build with
     ```bash
     $ cmake --build build --preset conan-debug
-    ```
