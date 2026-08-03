@@ -11,6 +11,9 @@ class Cursor : public Component {
 public:
     void init() override {
         transform = &entity->getComponent<TransformComponent>();
+        SDL_Surface* surface = IMG_Load("assets/arrow.png"); 
+        texture = SDL_CreateTextureFromSurface(Game::renderer, surface); 
+        SDL_FreeSurface(surface);
         pos = Vector2D(0.0f, 0.0f);
     }
 
@@ -30,7 +33,7 @@ public:
         float centerOffsetY = 16.0f * transform->scale;
         Vector2D playerCenter = playerPos + Vector2D(centerOffsetX, centerOffsetY);
         Vector2D direction = pos - playerCenter;
-        int aimerLength = 200;
+        int aimerLength = 100;
 
         Vector2D normalizedDirection = direction.normalize();
         Vector2D endPoint = (playerCenter + (normalizedDirection * aimerLength));
@@ -39,24 +42,19 @@ public:
         int endX = static_cast<int>(endPoint.x - Game::camera.x);
         int endY = static_cast<int>(endPoint.y - Game::camera.y);
 
-        SDL_Surface* surface = IMG_Load("assets/window.png"); 
-        SDL_Texture* texture = SDL_CreateTextureFromSurface(Game::renderer, surface); 
-        SDL_FreeSurface(surface);
-
         SDL_Rect dest;
+
         dest.x = startX;
-        dest.y = startY;
-        dest.w = 200;
-        dest.h = 200;
+        dest.y = startY - aimerLength / 2;
+        dest.w = aimerLength;
+        dest.h = aimerLength; 
+
+        SDL_Point center = { 0, aimerLength / 2 }; 
 
         float angle = std::atan2(normalizedDirection.y, normalizedDirection.x) * 180.0f / std::numbers::pi_v<float>;
 
-        SDL_Point center = {static_cast<int>(centerOffsetX), static_cast<int>(centerOffsetY)};
-
-        
-
-        // SDL_SetRenderDrawColor(Game::renderer, 255, 255, 255, 255);
-        // SDL_RenderDrawLine(Game::renderer, startX, startY, endX, endY);
+        SDL_SetRenderDrawColor(Game::renderer, 255, 255, 255, 255);
+        SDL_RenderDrawLine(Game::renderer, startX, startY, endX, endY);
         SDL_RenderCopyEx(Game::renderer, texture, NULL, &dest, angle, &center, SDL_FLIP_NONE);
     }
 
@@ -66,6 +64,7 @@ public:
 private:
     TransformComponent* transform;
     Vector2D pos;
+    SDL_Texture* texture;
 };
 
 #endif
