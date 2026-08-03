@@ -3,6 +3,7 @@
 
 #include "ECS.h"
 #include "TransformComponent.h"
+#include "TextureManager.h"
 #include "Vector2D.h"
 
 #include <numbers>
@@ -11,9 +12,7 @@ class Cursor : public Component {
 public:
     void init() override {
         transform = &entity->getComponent<TransformComponent>();
-        SDL_Surface* surface = IMG_Load("assets/arrow.png"); 
-        texture = SDL_CreateTextureFromSurface(Game::renderer, surface); 
-        SDL_FreeSurface(surface);
+        texture = TextureManager::LoadTexture("assets/arrow.png");
         pos = Vector2D(0.0f, 0.0f);
     }
 
@@ -33,7 +32,7 @@ public:
         float centerOffsetY = 16.0f * transform->scale;
         Vector2D playerCenter = playerPos + Vector2D(centerOffsetX, centerOffsetY);
         Vector2D direction = pos - playerCenter;
-        int aimerLength = 100;
+        int aimerLength = 200;
 
         Vector2D normalizedDirection = direction.normalize();
         Vector2D endPoint = (playerCenter + (normalizedDirection * aimerLength));
@@ -43,13 +42,21 @@ public:
         int endY = static_cast<int>(endPoint.y - Game::camera.y);
 
         SDL_Rect dest;
+        int aimerW, aimerH;
 
-        dest.x = startX;
-        dest.y = startY - aimerLength / 2;
-        dest.w = aimerLength;
-        dest.h = aimerLength; 
+        if(SDL_QueryTexture(texture, NULL, NULL, &aimerW, &aimerH)) {
+            dest.x = startX;
+            dest.y = startY - aimerLength / 2;
+            dest.w = aimerW;
+            dest.h = aimerH; 
+        } else {
+            dest.x = startX;
+            dest.y = startY - aimerLength / 2;
+            dest.w = aimerLength;
+            dest.h = aimerLength; 
+        }
 
-        SDL_Point center = { 0, aimerLength / 2 }; 
+        SDL_Point center = { 0, aimerH / 2 }; 
 
         float angle = std::atan2(normalizedDirection.y, normalizedDirection.x) * 180.0f / std::numbers::pi_v<float>;
 
