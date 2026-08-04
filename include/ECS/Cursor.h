@@ -27,6 +27,7 @@ public:
 
     void draw() override {
         Vector2D playerPos = transform->position;
+        
         // Change depending on sprite resolution
         float centerOffsetX = 16.0f * transform->scale;
         float centerOffsetY = 16.0f * transform->scale;
@@ -44,24 +45,24 @@ public:
         SDL_Rect dest;
         int aimerW, aimerH;
 
-        if(SDL_QueryTexture(texture, NULL, NULL, &aimerW, &aimerH)) {
-            dest.x = startX;
-            dest.y = startY - aimerLength / 2;
-            dest.w = aimerW;
-            dest.h = aimerH; 
+        if (SDL_QueryTexture(texture, NULL, NULL, &aimerW, &aimerH) == 0) {
+            dest.w = static_cast<int>(aimerW / 2);
+            dest.h = static_cast<int>(aimerH);
         } else {
-            dest.x = startX;
-            dest.y = startY - aimerLength / 2;
+            aimerH = aimerLength;
             dest.w = aimerLength;
-            dest.h = aimerLength; 
+            dest.h = aimerLength;
         }
 
-        SDL_Point center = { 0, aimerH / 2 }; 
+        dest.x = startX;
+        dest.y = startY - dest.h / 2;
+
+        SDL_Point center = { 0, dest.h / 2 };
 
         float angle = std::atan2(normalizedDirection.y, normalizedDirection.x) * 180.0f / std::numbers::pi_v<float>;
 
         SDL_SetRenderDrawColor(Game::renderer, 255, 255, 255, 255);
-        SDL_RenderDrawLine(Game::renderer, startX, startY, endX, endY);
+        // SDL_RenderDrawLine(Game::renderer, startX, startY, endX, endY);
         SDL_RenderCopyEx(Game::renderer, texture, NULL, &dest, angle, &center, SDL_FLIP_NONE);
     }
 
