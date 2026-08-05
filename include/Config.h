@@ -7,7 +7,7 @@ namespace Config {
 constexpr int WINDOW_WIDTH = 800;
 constexpr int WINDOW_HEIGHT = 640;
 constexpr bool FULLSCREEN = false;
-constexpr const char *WINDOW_TITLE = "BirchEngine Revamped";
+constexpr const char *WINDOW_TITLE = "NeoBirch";
 
 // Performance
 constexpr int FPS = 60;
