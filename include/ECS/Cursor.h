@@ -5,14 +5,16 @@
 #include "TransformComponent.h"
 #include "TextureManager.h"
 #include "Vector2D.h"
+#include "Config.h"
 
 #include <numbers>
+
 
 class Cursor : public Component {
 public:
     void init() override {
         transform = &entity->getComponent<TransformComponent>();
-        texture = TextureManager::LoadTexture("assets/arrow.png");
+        texture = TextureManager::LoadTexture("assets/aimer.png");
         pos = Vector2D(0.0f, 0.0f);
     }
 
@@ -29,8 +31,8 @@ public:
         Vector2D playerPos = transform->position;
         
         // Change depending on sprite resolution
-        float centerOffsetX = 16.0f * transform->scale;
-        float centerOffsetY = 16.0f * transform->scale;
+        float centerOffsetX = (Config::SPRITE_RESOLUTION / 2) * transform->scale;
+        float centerOffsetY = (Config::SPRITE_RESOLUTION / 2) * transform->scale;
         Vector2D playerCenter = playerPos + Vector2D(centerOffsetX, centerOffsetY);
         Vector2D direction = pos - playerCenter;
         int aimerLength = 200;

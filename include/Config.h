@@ -28,10 +28,11 @@ constexpr int MAP_HEIGHT = 20;
 
 // Player
 constexpr float PLAYER_START_X = 800.0f;
-constexpr float PLAYER_START_Y = 640.0f;
+constexpr float PLAYER_START_Y = 660.0f;
 constexpr int PLAYER_WIDTH = 32;
 constexpr int PLAYER_HEIGHT = 32;
 constexpr int PLAYER_SCALE = 3;
+constexpr float SPRITE_RESOLUTION = 32.0f;
 
 constexpr int PLAYER_HEALTH = 50;
 
