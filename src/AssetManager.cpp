@@ -4,7 +4,7 @@
 namespace {
   constexpr std::string_view kTexturePaths[] = {
     "assets/terrain_ss.png",
-    "assets/player_anims.png",
+    "assets/wizard_anims.png",
     "assets/proj.png",
     "assets/window.png"
   };
