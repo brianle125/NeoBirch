@@ -33,6 +33,9 @@ jobs:
       - name: Create default Conan profile
         run: conan profile detect --force
 
+      - name: Show Conan profile
+        run: conan profile show -pr default
+
       - name: Cache Conan Dependencies
         id: cache-conan
         uses: actions/cache@v4
@@ -44,7 +47,7 @@ jobs:
             ${{ runner.os }}-conan-
 
       - name: Install dependencies (Windows)
-        run: conan install . --build=missing --output-folder build -c tools.cmake.cmaketoolchain:generator=Ninja
+        run: conan install . --build=missing --output-folder build -c tools.cmake.cmaketoolchain:generator=Ninja -vv
 
       - name: Set up MSVC environment variables
         uses: TheMrMilchmann/setup-msvc-dev@v4
