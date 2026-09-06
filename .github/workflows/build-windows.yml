@@ -43,7 +43,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-conan-
 
-      - name: Install dependencies
+      - name: Install dependencies (Windows)
         run: conan install . --build=missing --output-folder build -c tools.cmake.cmaketoolchain:generator=Ninja
 
       - name: Set up MSVC environment variables
