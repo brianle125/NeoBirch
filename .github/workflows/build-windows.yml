@@ -29,19 +29,25 @@ jobs:
       - name: Install conan
         run: |
           pip install conan
+      
+      - name: Create default Conan profile
+        run: conan profile detect --force
+
+      - name: Show Conan profile
+        run: conan profile show -pr default
 
       - name: Cache Conan Dependencies
         id: cache-conan
         uses: actions/cache@v4
         with:
-          path: ${{ env.USERPROFILE }}\.conan2
-          key: ${{ hashFiles('**/conanfile.txt') }}
-      - if: ${{steps.cache-conan.outputs.cache-hit != 'true'}}
-        name: Create default Conan profile
-        run: conan profile detect
+          path: |
+            ${{ env.USERPROFILE }}\.conan2\p 
+          key: ${{ runner.os }}-conan-${{ hashFiles('**/conanfile.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-conan-
 
-      - name: Install dependencies
-        run: conan install . --build=missing --output-folder build -c tools.cmake.cmaketoolchain:generator=Ninja
+      - name: Install dependencies (Windows)
+        run: conan install . --build=missing --output-folder build -c tools.cmake.cmaketoolchain:generator=Ninja -vv
 
       - name: Set up MSVC environment variables
         uses: TheMrMilchmann/setup-msvc-dev@v4
