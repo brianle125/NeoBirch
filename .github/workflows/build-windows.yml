@@ -41,7 +41,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            ${{ env.USERPROFILE }}\.conan2 
+            ${{ env.USERPROFILE }}\.conan2\p 
           key: ${{ runner.os }}-conan-${{ hashFiles('**/conanfile.txt') }}
           restore-keys: |
             ${{ runner.os }}-conan-
