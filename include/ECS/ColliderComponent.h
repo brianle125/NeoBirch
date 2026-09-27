@@ -4,17 +4,20 @@
 #include "../Game.h"
 #include "ECS.h"
 #include "TransformComponent.h"
+#include "Config.h"
+
 #include <SDL.h>
+
+struct ColliderDefinition {
+  int offsetX;
+  int offsetY;
+  int width;
+  int height;
+};
 
 class ColliderComponent : public Component {
 public:
   SDL_Rect collider;
-  std::string tag;
-
-  SDL_Texture *tex;
-  SDL_Rect srcR, destR;
-
-  TransformComponent *transform;
 
   ColliderComponent(std::string t) { tag = t; }
 
@@ -25,6 +28,14 @@ public:
     collider.h = collider.w = size;
   }
 
+  ColliderComponent(std::string t, int xpos, int ypos, int w, int h) {
+    tag = t;
+    collider.x = xpos;
+    collider.y = ypos;
+    collider.w = w;
+    collider.h = h;
+  }
+
   void init() override {
     if (!entity->hasComponent<TransformComponent>()) {
       entity->addComponent<TransformComponent>();
@@ -33,7 +44,7 @@ public:
     transform = &entity->getComponent<TransformComponent>();
 
     tex = TextureManager::LoadTexture("assets/coltex.png");
-    srcR = {0, 0, 32, 32};
+    srcR = {0, 0, Config::TILE_SIZE, Config::TILE_SIZE};
     destR = {collider.x, collider.y, collider.w, collider.h};
   }
 
@@ -45,8 +56,12 @@ public:
       collider.h = transform->height * transform->scale;
     }
 
-    destR.x = collider.x - Game::camera.x;
-    destR.y = collider.y - Game::camera.y;
+    destR = {
+        collider.x - Game::camera.x,
+        collider.y - Game::camera.y,
+        collider.w,
+        collider.h
+    };
   }
 
   void draw() override {
@@ -54,4 +69,9 @@ public:
   }
 
 private:
+  std::string tag;
+  SDL_Texture *tex;
+  SDL_Rect srcR, destR;
+
+  TransformComponent *transform;
 };
