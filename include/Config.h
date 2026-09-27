@@ -22,7 +22,7 @@ constexpr int CAMERA_OFFSET_Y = 320; // Half of WINDOW_HEIGHT
 
 // Map
 constexpr int TILE_SIZE = 32;
-constexpr int MAP_SCALE = 3;
+constexpr int MAP_SCALE = 2;
 constexpr int MAP_WIDTH = 25;
 constexpr int MAP_HEIGHT = 20;
 
@@ -31,7 +31,7 @@ constexpr float PLAYER_START_X = 800.0f;
 constexpr float PLAYER_START_Y = 660.0f;
 constexpr int PLAYER_WIDTH = 32;
 constexpr int PLAYER_HEIGHT = 32;
-constexpr int PLAYER_SCALE = 3;
+constexpr int PLAYER_SCALE = 2;
 constexpr float SPRITE_RESOLUTION = 32.0f;
 
 constexpr int PLAYER_HEALTH = 50;
