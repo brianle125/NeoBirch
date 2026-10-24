@@ -15,26 +15,14 @@ public:
 
   bool blocked = false;
 
-  TransformComponent() { position.Zero(); }
+  TransformComponent();
 
-  TransformComponent(int sc) {
-    position.Zero();
-    scale = sc;
-  }
+  TransformComponent(int sc);
 
-  TransformComponent(float x, float y) { position.Zero(); }
+  TransformComponent(float x, float y);
 
-  TransformComponent(float x, float y, int h, int w, int sc) {
-    position.x = x;
-    position.y = y;
-    height = h;
-    width = w;
-    scale = sc;
-  }
+  TransformComponent(float x, float y, int h, int w, int sc);
 
-  void init() override { velocity.Zero(); }
-  void update() override {
-    position.x += static_cast<int>(velocity.x * speed);
-    position.y += static_cast<int>(velocity.y * speed);
-  }
+  void init() override;
+  void update() override;
 };
