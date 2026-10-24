@@ -6,6 +6,47 @@
 
 extern Manager manager;
 
+namespace {
+
+enum TerrainType {
+  DEFAULT,
+  SQUARE,
+  RECT_TOP,
+  RECT_BOTTOM,
+  RECT_LEFT,
+  RECT_RIGHT
+};
+
+struct TerrainColliderSpec {
+  int x;
+  int y;
+  int w;
+  int h;
+};
+
+TerrainColliderSpec GetTerrainColliderSpec(TerrainType terrainType, int tileX, int tileY,
+                                          int scaledSize) {
+  const int halfSize = scaledSize / 2;
+
+  switch (terrainType) {
+  case SQUARE:
+    return {tileX * scaledSize, tileY * scaledSize, scaledSize, scaledSize};
+  case RECT_TOP:
+    return {tileX * scaledSize, tileY * scaledSize, scaledSize, halfSize};
+  case RECT_BOTTOM:
+    return {tileX * scaledSize, tileY * scaledSize + halfSize, scaledSize,
+            halfSize};
+  case RECT_LEFT:
+    return {tileX * scaledSize, tileY * scaledSize, halfSize, scaledSize};
+  case RECT_RIGHT:
+    return {tileX * scaledSize + halfSize, tileY * scaledSize, halfSize,
+            scaledSize};
+  default:
+    return {0, 0, 0, 0};
+  }
+}
+} // namespace
+
 Map::Map(TextureId tID, int ms, int ts)
     : texID(tID), mapScale(ms), tileSize(ts) {
   scaledSize = ms * ts;
@@ -36,11 +77,15 @@ void Map::LoadMap(const std::string &path, int sizeX, int sizeY) {
   for (int y = 0; y < sizeY; y++) {
     for (int x = 0; x < sizeX; x++) {
       mapFile.get(c);
-      if (c == '1') {
-        auto &tcol(manager.addEntity());
-        tcol.addComponent<ColliderComponent>("terrain", x * scaledSize,
-                                             y * scaledSize, scaledSize);
-        tcol.addGroup(Game::groupColliders);
+      const int terrainType = c - '0';
+      if (terrainType > 0) {
+        const auto spec = GetTerrainColliderSpec(static_cast<TerrainType>(terrainType), x, y, scaledSize);
+        if (spec.w > 0 && spec.h > 0) {
+          auto &tcol(manager.addEntity());
+          tcol.addComponent<ColliderComponent>("terrain", spec.x, spec.y,
+                                               spec.w, spec.h);
+          tcol.addGroup(Game::groupColliders);
+        }
       }
       mapFile.ignore();
     }

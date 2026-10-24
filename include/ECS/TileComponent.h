@@ -7,12 +7,7 @@
 
 class TileComponent : public Component {
 public:
-  SDL_Texture *texture;
-  SDL_Rect srcRect, destRect;
-  Vector2D position;
-
   TileComponent() = default;
-
   ~TileComponent() = default;
 
   TileComponent(int srcX, int srcY, int xpos, int ypos, int tsize, int tscale,
@@ -34,4 +29,8 @@ public:
   void draw() override {
     TextureManager::Draw(texture, srcRect, destRect, SDL_FLIP_NONE);
   }
+private:
+  SDL_Texture *texture;
+  SDL_Rect srcRect, destRect;
+  Vector2D position;
 };
