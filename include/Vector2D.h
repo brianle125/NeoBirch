@@ -24,7 +24,7 @@ public:
   Vector2D &operator*=(float scalar);
   Vector2D &operator*=(int scalar);
 
-  bool operator==(const Vector2D& rhs) const = default;
+  bool operator==(const Vector2D& rhs) const;
 
   Vector2D normalize();
   Vector2D Zero();
