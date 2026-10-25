@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../AssetManager.h"
 #include "../Game.h"
 #include "../TextureManager.h"
 #include "../Vector2D.h"
@@ -7,28 +8,14 @@
 
 class TileComponent : public Component {
 public:
-  TileComponent() = default;
-  ~TileComponent() = default;
+  TileComponent();
+  ~TileComponent() override;
 
   TileComponent(int srcX, int srcY, int xpos, int ypos, int tsize, int tscale,
-                TextureId id) {
-    texture = Game::assets->GetTexture(id);
+                TextureId id);
 
-    srcRect.x = srcX;
-    srcRect.y = srcY;
-    srcRect.w = srcRect.h = tsize;
-    position.x = static_cast<float>(xpos);
-    position.y = static_cast<float>(ypos);
-    destRect.w = destRect.h = tsize * tscale;
-  }
-
-  void update() override {
-    destRect.x = static_cast<int>(position.x - Game::camera.x);
-    destRect.y = static_cast<int>(position.y - Game::camera.y);
-  }
-  void draw() override {
-    TextureManager::Draw(texture, srcRect, destRect, SDL_FLIP_NONE);
-  }
+  void update() override;
+  void draw() override;
 private:
   SDL_Texture *texture;
   SDL_Rect srcRect, destRect;
