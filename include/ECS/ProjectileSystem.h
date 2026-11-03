@@ -9,18 +9,8 @@
 
 class ProjectileSystem : public System {
 public:
-    ProjectileSystem(std::vector<Entity*>& projectiles) : projectiles(projectiles) {}
-    void update(std::vector<Entity*>& entities) override {
-        for (auto &entity : entities) {
-            for (auto &proj : projectiles) {
-                if (Collision::AABB(
-                        entity->getComponent<ColliderComponent>().collider,
-                        proj->getComponent<ColliderComponent>().collider)) {
-                    proj->destroy();
-                }
-            }
-        }
-    }
+    ProjectileSystem(std::vector<Entity*>& projectiles);
+    void update(std::vector<Entity*>& entities) override;
 private:
     std::vector<Entity*>& projectiles;
 };

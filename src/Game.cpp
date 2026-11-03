@@ -44,6 +44,8 @@ Game::~Game() {
   SDL_Quit();
 }
 
+bool Game::running() { return isRunning; }
+
 void Game::init(const char *title, int width, int height, bool fullscreen) {
   int flags = 0;
 

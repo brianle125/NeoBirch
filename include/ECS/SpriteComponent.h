@@ -25,58 +25,17 @@ public:
 
   SDL_RendererFlip spriteFlip = SDL_FLIP_NONE;
 
-  SpriteComponent() = default;
-  SpriteComponent(TextureId id) { setTex(id); }
+  SpriteComponent();
+  SpriteComponent(TextureId id);
 
-  SpriteComponent(TextureId id, bool isAnimated) {
-    animated = isAnimated;
+  SpriteComponent(TextureId id, bool isAnimated);
 
-    Animation idle = Animation(0, 3, 100);
-    Animation walk = Animation(1, 8, 100);
+  ~SpriteComponent() override;
 
-    animations.emplace("Idle", idle);
-    animations.emplace("Walk", walk);
-    Play("Idle");
+  void setTex(TextureId id);
 
-    setTex(id);
-  }
-
-  ~SpriteComponent() {}
-
-  void setTex(TextureId id) { texture = Game::assets->GetTexture(id); }
-
-  void init() override {
-
-    transform = &entity->getComponent<TransformComponent>();
-    srcRect.x = srcRect.y = 0;
-    srcRect.w = transform->width;
-    srcRect.h = transform->height;
-  }
-
-  void update() override {
-    // Guard against division by zero
-    if (animated && speed > 0 && frames > 0) {
-      srcRect.x =
-          srcRect.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
-    } else {
-      srcRect.x = 0;
-    }
-
-    srcRect.y = animIndex * transform->height;
-
-    destRect.x = static_cast<int>(transform->position.x - Game::camera.x);
-    destRect.y = static_cast<int>(transform->position.y - Game::camera.y);
-    destRect.w = transform->width * transform->scale;
-    destRect.h = transform->height * transform->scale;
-  }
-
-  void draw() override {
-    TextureManager::Draw(texture, srcRect, destRect, spriteFlip);
-  }
-
-  void Play(const std::string animName) {
-    frames = animations[animName].frames;
-    animIndex = animations[animName].index;
-    speed = animations[animName].speed;
-  }
+  void init() override;
+  void update() override;
+  void draw() override;
+  void Play(const std::string animName);
 };

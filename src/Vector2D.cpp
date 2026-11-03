@@ -1,4 +1,6 @@
 #include "Vector2D.h"
+
+bool Vector2D::operator==(const Vector2D &rhs) const = default;
 #include <cmath>
 
 Vector2D::Vector2D() : x(0.0f), y(0.0f) {}

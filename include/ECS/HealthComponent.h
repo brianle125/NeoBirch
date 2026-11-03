@@ -7,15 +7,15 @@ static constexpr int DefaultHealth = 30;
 
 class HealthComponent : public Component {
 public:
-  HealthComponent() : currentHealth(DefaultHealth), maxHealth(DefaultHealth) {}
-  HealthComponent(int ch, int mh) : currentHealth(ch), maxHealth(mh) {}
-  ~HealthComponent() = default;
+  HealthComponent();
+  HealthComponent(int ch, int mh);
+  ~HealthComponent();
 
-  const int getHealth() { return currentHealth; }
+  const int getHealth();
 
   // TODO: This can do for now as the "game" is very simple,
   // but this damage should either be another component or event-based
-  void takeDamage(int dmg) { currentHealth -= dmg; }
+  void takeDamage(int dmg);
 
 private:
   int currentHealth;
