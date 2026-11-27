@@ -7,6 +7,7 @@
 #include "ECS/CameraSystem.h"
 #include "ECS/PhysicsSystem.h"
 #include "ECS/ProjectileSystem.h"
+#include "Logger.h"
 #include "Map.h"
 #include "TextureManager.h"
 #include "Vector2D.h"
@@ -49,6 +50,8 @@ bool Game::running() { return isRunning; }
 void Game::init(const char *title, int width, int height, bool fullscreen) {
   int flags = 0;
 
+  Logger::Info("Game started");
+
   if (fullscreen) {
     flags = SDL_WINDOW_FULLSCREEN;
   }
@@ -72,7 +75,7 @@ void Game::init(const char *title, int width, int height, bool fullscreen) {
 
   // Init the font
   if (TTF_Init() == -1) {
-    std::cerr << "Error : SDL_TTF" << std::endl;
+    Logger::Error("Error : SDL_TTF");
   }
 
   // Load Textures and font

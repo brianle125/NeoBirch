@@ -8,7 +8,7 @@
 #include <sstream>
 #include <utility>
 
-class Logger final {
+class Logger {
 public:
   template <typename... Args>
   static void Info(Args &&...args) {
@@ -50,5 +50,5 @@ private:
            << '\n';
   }
 
-  static std::mutex mutex;
+  inline static std::mutex mutex;
 };

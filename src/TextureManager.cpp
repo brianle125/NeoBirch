@@ -1,12 +1,13 @@
 #include "TextureManager.h"
+#include "Logger.h"
 
 SDL_Texture *TextureManager::LoadTexture(const char *texture) {
   SDL_Surface *tempSurface = IMG_Load(texture);
   SDL_Texture *tex = SDL_CreateTextureFromSurface(Game::renderer, tempSurface);
   SDL_FreeSurface(tempSurface);
   if (!tex) {
-    std::cout << "Failed to load texture: " << texture
-              << " Error: " << SDL_GetError() << std::endl;
+    Logger::Error("Failed to load texture: ", texture, " Error: ",
+                  SDL_GetError());
   }
   return tex;
 }

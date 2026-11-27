@@ -1,12 +1,12 @@
 #include <SDL2/SDL.h>
 #include "gtest/gtest.h"
-#include <iostream>
+#include "Logger.h"
 
 int main(int argc, char *argv[]) {
     SDL_SetMainReady();
 
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
-      std::cerr << "FATAL: Cannot init SDL: " << SDL_GetError();
+      Logger::Error("FATAL: Cannot init SDL: ", SDL_GetError());
       return -1;
     }
 

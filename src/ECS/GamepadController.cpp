@@ -1,4 +1,5 @@
 #include "ECS/GamepadController.h"
+#include "Logger.h"
 
 GamepadController::~GamepadController() {
   if (controller) {
@@ -72,7 +73,7 @@ void GamepadController::init() {
   controller = findController();
 
   if (!controller) {
-    std::cout << "Controller not detected.\n";
+    Logger::Info("Controller not detected.");
   }
 }
 
@@ -81,7 +82,7 @@ void GamepadController::update() {
     controller = findController();
     if (!controller)
       return;
-    std::cout << "Controller detected.\n";
+    Logger::Info("Controller detected.");
   }
   processMovement();
 }

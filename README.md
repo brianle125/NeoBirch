@@ -1,9 +1,6 @@
 # NeoBirch
 A 2D ECS-based game engine constructed with C++ and SDL2. 
 
-Expanded from Carl Birch's BirchEngine: 
-https://www.youtube.com/watch?v=QQzAHcojEKg
-
 ## Features
 - Entity collision
 - Projectiles

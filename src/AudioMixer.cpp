@@ -1,21 +1,22 @@
 #include "AudioMixer.h"
 #include "AssetManager.h"
 #include "Config.h"
-#include <stdio.h>
+#include "Logger.h"
 
 using namespace Config;
 
 AudioMixer::AudioMixer() : musicVolume(DEFAULT_VOLUME), gMusic(nullptr) {
   // Initialize SDL_mixer
   if (Mix_OpenAudio(MIX_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
-    printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n",
-           Mix_GetError());
+    Logger::Error("SDL_mixer could not initialize! SDL_mixer Error: ",
+                  Mix_GetError());
   }
 
   // Load music and sfx
   gMusic = Mix_LoadMUS("assets/audio/placeholder.mp3");
   if (gMusic == NULL) {
-    printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
+    Logger::Error("Failed to load beat music! SDL_mixer Error: ",
+                  Mix_GetError());
   }
 
   // Load sound effects into map
