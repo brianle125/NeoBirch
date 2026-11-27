@@ -16,6 +16,11 @@ public:
   }
 
   template <typename... Args>
+  static void Debug(Args &&...args) {
+    Write(std::cerr, "DEBUG", std::forward<Args>(args)...);
+  }
+
+  template <typename... Args>
   static void Error(Args &&...args) {
     Write(std::cerr, "ERROR", std::forward<Args>(args)...);
   }
