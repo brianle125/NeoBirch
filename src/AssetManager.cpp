@@ -1,5 +1,6 @@
 #include "AssetManager.h"
 #include "ECS/Components.h"
+#include "Logger.h"
 
 namespace {
   constexpr std::string_view kTexturePaths[] = {
@@ -57,7 +58,7 @@ SDL_Texture *AssetManager::GetTexture(TextureId id) {
 void AssetManager::AddFont(FontId id, FontSize fontSize) {
   TTF_Font* font = TTF_OpenFont(GetFontPath(id).data(), static_cast<int>(fontSize));
   if(!font) {
-    std::cerr << "Unable to open font: " << SDL_GetError() << std::endl; 
+    Logger::Error("Unable to open font: ", SDL_GetError());
   }
   fonts.emplace(id, font);
 }
