@@ -36,15 +36,15 @@ jobs:
       - name: Show Conan profile
         run: conan profile show -pr default
 
-      - name: Cache Conan Dependencies
+      - name: Cache Conan packages
         id: cache-conan
         uses: actions/cache@v4
         with:
           path: |
-            ${{ env.USERPROFILE }}\.conan2\p 
-          key: ${{ runner.os }}-conan-${{ hashFiles('**/conanfile.txt') }}
+            ${{ steps.conan-home.outputs.path }}/p
+          key: conan-${{ runner.os }}-${{ matrix.arch }}-${{ hashFiles('**/conanfile.txt', '**/conanfile.py') }}
           restore-keys: |
-            ${{ runner.os }}-conan-
+            conan-${{ runner.os }}-${{ matrix.arch }}-
 
       - name: Install dependencies (Windows)
         run: conan install . --build=missing --output-folder build -c tools.cmake.cmaketoolchain:generator=Ninja -vv
@@ -62,3 +62,7 @@ jobs:
 
       - name: Build (Windows)
         run: cmake --build build --preset conan-release
+
+      - name: Clean Conan cache
+        if: always()
+        run: conan cache clean "*" --source --build --download
