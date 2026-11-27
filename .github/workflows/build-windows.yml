@@ -10,6 +10,8 @@ jobs:
   build:
     name: Build on ${{ matrix.os }} (${{ matrix.arch }})
     runs-on: ${{ matrix.os }}
+    env:
+      CONAN_HOME: ${{ github.workspace }}/.conan2
     strategy:
       fail-fast: false
       matrix:
@@ -26,6 +28,11 @@ jobs:
         with:
           python-version: '3.14'
 
+      - name: Set up MSVC environment variables
+        uses: TheMrMilchmann/setup-msvc-dev@v4
+        with:
+          arch: x64
+
       - name: Install conan
         run: |
           pip install conan
@@ -40,19 +47,13 @@ jobs:
         id: cache-conan
         uses: actions/cache@v4
         with:
-          path: |
-            ${{ steps.conan-home.outputs.path }}/p
-          key: conan-${{ runner.os }}-${{ matrix.arch }}-${{ hashFiles('**/conanfile.txt', '**/conanfile.py') }}
+          path: ${{ env.CONAN_HOME }}/p
+          key: conan-${{ runner.os }}-${{ matrix.arch }}-${{ hashFiles('**/conanfile.txt') }}
           restore-keys: |
             conan-${{ runner.os }}-${{ matrix.arch }}-
 
       - name: Install dependencies (Windows)
         run: conan install . --build=missing --output-folder build -c tools.cmake.cmaketoolchain:generator=Ninja -vv
-
-      - name: Set up MSVC environment variables
-        uses: TheMrMilchmann/setup-msvc-dev@v4
-        with:
-          arch: x64
       
       - name: Configure CMake
         run: cmake --preset conan-release
